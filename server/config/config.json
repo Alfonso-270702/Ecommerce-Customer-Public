@@ -1,0 +1,19 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "alfonso123",
+    "database": "e-commerce-development",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "alfonso123",
+    "database": "e-commerce-test",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}
