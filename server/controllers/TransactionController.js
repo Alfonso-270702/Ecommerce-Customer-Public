@@ -1,34 +1,29 @@
 const { UserProduct, Product } = require('../models')
-const removeProduct = require('../helpers/removeProduct')
 
 class TransactionController {
     static async updateProduct(req,res,next){
         try {
-            const userProduct = await UserProduct.findAll({
+            let userProduct = await UserProduct.findAll({
                 where: {
                     userId: req.userData.id,
                     status: false
                 }
             })
+            console.log(userProduct)
             for (let i = 0; i < userProduct.length; i++) {
                 let userCheckOut = userProduct[i]
-                // let findProduct = 100
-                const findProduct = await Product.findOne({
+                let findProduct = await Product.findOne({
                     where:{
                         id: userCheckOut.productId
-                    }
+                    }, order: [['id', 'asc']]
                 })
-                console.log(userCheckOut)
+                // console.log(findProduct)
                 let updatedStock = findProduct.stock - userCheckOut.quantity
-                await Product.update({
-                    stock: updatedStock
-                }, {where:{
-                    id: findProduct.id
-                }})
+                await Product.update({stock: updatedStock}, {where:{id: findProduct.id}})
                 await UserProduct.update({status: true}, {where:{userId: req.userData.id, productId: findProduct.id}})
             }
             const listProduct = await Product.findAll()
-            res.send(listProduct)
+            res.status(200).json(listProduct)
         } catch (error) {
            next(error) 
         }

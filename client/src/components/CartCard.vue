@@ -13,7 +13,9 @@
               <br>
               <small>Rp {{Number(cart.Product.price).toLocaleString()}}</small>
               </p>
-              <input type="number" v-model="quantity" :max="cart.Product.stock" min="0">
+              <button @click="increment" class="button is-primary"> Add</button>
+              <input type="number" :value="cart.quantity" min="0" readonly>
+              <button @click="decrement" class="button is-primary"> Minus</button>
               <button @click="deleteItem" class="button is-warning ml-2">
               <i class="far fa-trash-alt"></i>
               </button>
@@ -35,14 +37,12 @@ export default {
   methods: {
     deleteItem () {
       this.$store.dispatch('deleteItem', this.cart.Product.id)
-    }
-  },
-  watch: {
-    quantity () {
-      this.$store.dispatch('editedQuantity', {
-        quantity: this.quantity,
-        id: this.cart.productId
-      })
+    },
+    increment () {
+      this.$store.dispatch('increment', this.cart.productId)
+    },
+    decrement () {
+      this.$store.dispatch('decrement', this.cart.productId)
     }
   }
 }

@@ -27,6 +27,20 @@ export default new Vuex.Store({
     userLogoutStatus (state) {
       state.isLogin = false
       localStorage.clear()
+    },
+    incrementQuantity (state, payload) {
+      state.carts.forEach(item => {
+        if (item.productId === payload.productId) {
+          item.quantity = payload.quantity
+        }
+      })
+    },
+    decrementQuantity (state, payload) {
+      state.carts.forEach(item => {
+        if (item.productId === payload.productId) {
+          item.quantity = payload.quantity
+        }
+      })
     }
   },
   actions: {
@@ -59,19 +73,9 @@ export default new Vuex.Store({
         url: '/shops'
       })
         .then(({ data }) => {
-          // console.log(data)
           context.commit('shopLists', data)
         })
     },
-    // addToCart (context, id) {
-    //   axios({
-    //     method: 'get',
-    //     url: '/shops'
-    //   })
-    //     .then(({ data }) => {
-    //       console.log(data)
-    //     })
-    // },
     addToCart (context, id) {
       axios({
         method: 'post',
@@ -80,7 +84,7 @@ export default new Vuex.Store({
           token: localStorage.token
         }
       })
-        .then(data => {
+        .then(_ => {
           Swal.fire({
             icon: 'success',
             title: 'Success Add To Cart'
@@ -96,7 +100,6 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          // console.log(data)
           context.commit('userCart', data)
         })
     },
@@ -126,19 +129,49 @@ export default new Vuex.Store({
         .then(_ => {
           context.dispatch('userCart')
         })
+    },
+    checkOutProduct (context) {
+      axios({
+        method: 'post',
+        url: '/payment',
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(_ => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Thank You For Buying In This Website'
+          })
+          router.push({ name: 'Shop' })
+        })
+    },
+    increment (context, id) {
+      axios({
+        method: 'put',
+        url: `/shops/plus/${id}`,
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          context.commit('incrementQuantity', data)
+          context.dispatch('userCart')
+        })
+    },
+    decrement (context, id) {
+      axios({
+        method: 'put',
+        url: `/shops/minus/${id}`,
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          context.commit('decrementQuantity', data)
+          context.dispatch('userCart')
+        })
     }
-    // checkOutProduct (context) {
-    //   axios({
-    //     method: 'post',
-    //     url: '/payment',
-    //     headers: {
-    //       token: localStorage.token
-    //     }
-    //   })
-    //     .then(_ => {
-    //       router.push({ name: 'Shop' })
-    //     })
-    // }
   },
   modules: {
   }

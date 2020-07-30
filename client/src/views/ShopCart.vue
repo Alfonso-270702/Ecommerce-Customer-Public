@@ -14,7 +14,7 @@
           <p class="subtitle">
             Rp {{price}}
           </p>
-          <!-- <button class="button"> Execute</button> -->
+          <button @click="checkOut" class="button is-success"> Execute</button>
         </div>
       </div>
     </div>
@@ -40,18 +40,18 @@ export default {
     price () {
       return this.$store.state.totalPrice
     }
+  },
+  methods: {
+    checkOut () {
+      this.$store.dispatch('checkOutProduct')
+    }
   }
-  // methods: {
-  //   checkOut () {
-  //     this.$store.dispatch('checkOutProduct')
-  //   }
-  // }
 }
 </script>
 
 <style>
   .section-cart{
     background-color: #dee0e4;
-    height: 100%;
+    min-height: 100vh;
   }
 </style>
