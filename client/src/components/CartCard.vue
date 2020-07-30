@@ -2,7 +2,7 @@
   <div class="box">
     <article class="media">
         <div class="media-left">
-        <figure class="image-cart">
+        <figure class="">
             <img :src="cart.Product.image_url" alt="Image">
         </figure>
         </div>
@@ -13,9 +13,9 @@
               <br>
               <small>Rp {{Number(cart.Product.price).toLocaleString()}}</small>
               </p>
-              <button @click="increment" class="button is-primary"> Add</button>
+              <button @click="increment" class="button is-primary mr-1"> <i class="fas fa-plus"></i></button>
+              <button @click="decrement" class="button is-primary mr-1"> <i class="fas fa-minus"></i></button>
               <input type="number" :value="cart.quantity" min="0" readonly>
-              <button @click="decrement" class="button is-primary"> Minus</button>
               <button @click="deleteItem" class="button is-warning ml-2">
               <i class="far fa-trash-alt"></i>
               </button>
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style>
-  .image-cart{
+  img{
     width: 200px;
     height: 200px;
   }
